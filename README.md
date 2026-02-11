@@ -1,4 +1,4 @@
---// Kevynmama Hub - UI RGB com ABAS + Créditos como aba separada (VERSÃO CORRIGIDA) ✅
+--// Kevynmama Hub - UI RGB com ABAS + Creditos como aba separada (VERSÃO CORRIGIDA) ✅
 
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
