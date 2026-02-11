@@ -1,5 +1,4 @@
---// Kevynmama Hub v1.2 - Versão Final Atualizada (Centralizada, Features Completas)
---// Janela no meio da tela, letras menores, mais larga/baixa, tudo testável
+--// Kevynmama Hub v1.2 - Base que funciona (sem features pesadas ainda)
 
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
@@ -9,7 +8,7 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-print("[Kevynmama Hub] Carregando versão final...")
+print("[OK] Iniciando base que funciona...")
 
 -- ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -19,12 +18,12 @@ screenGui.IgnoreGuiInset = true
 screenGui.DisplayOrder = 10000
 screenGui.Parent = playerGui
 
--- Botão Toggle (arrastável)
+-- Botão Toggle
 local toggleBtn = Instance.new("TextButton")
 toggleBtn.Size = UDim2.new(0, 65, 0, 55)
 toggleBtn.Position = UDim2.new(0, 20, 0, 20)
 toggleBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-toggleBtn.Text = "BOT"
+toggleBtn.Text = "MENU"
 toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 toggleBtn.TextScaled = true
 toggleBtn.Font = Enum.Font.GothamBold
@@ -39,9 +38,9 @@ toggleStroke.Color = Color3.fromRGB(255, 0, 0)
 toggleStroke.Thickness = 2.5
 toggleStroke.Parent = toggleBtn
 
--- Janela Principal (centralizada, mais larga e baixa)
+-- Janela Principal
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 700, 0, 320)
+mainFrame.Size = UDim2.new(0, 600, 0, 400)
 mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -52,9 +51,10 @@ local frameCorner = Instance.new("UICorner")
 frameCorner.CornerRadius = UDim.new(0, 16)
 frameCorner.Parent = mainFrame
 
--- Borda RGB animada
+-- Borda RGB
 local uiStroke = Instance.new("UIStroke")
 uiStroke.Thickness = 4.5
+uiStroke.Color = Color3.fromRGB(255, 255, 255)
 uiStroke.Transparency = 0
 uiStroke.Parent = mainFrame
 
@@ -62,292 +62,127 @@ local gradient = Instance.new("UIGradient")
 gradient.Rotation = 0
 gradient.Parent = uiStroke
 
--- Título (letra menor)
+-- Título
 local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, 0, 0, 45)
+titleLabel.Size = UDim2.new(1, 0, 0, 55)
 titleLabel.BackgroundTransparency = 1
-titleLabel.Text = "Kevynmama Bot Hub v1.2"
+titleLabel.Text = "Kevynmama Hub v1.2 🔥"
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.TextScaled = true
 titleLabel.Font = Enum.Font.GothamBold
-titleLabel.TextSize = 22
 titleLabel.Parent = mainFrame
 
 -- Sidebar
-local sidebar = Instance.new("ScrollingFrame")
-sidebar.Size = UDim2.new(0, 140, 1, -55)
-sidebar.Position = UDim2.new(0, 10, 0, 55)
-sidebar.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-sidebar.BorderSizePixel = 0
-sidebar.ScrollBarThickness = 6
+local sidebar = Instance.new("Frame")
+sidebar.Size = UDim2.new(0, 150, 1, -70)
+sidebar.Position = UDim2.new(0, 10, 0, 65)
+sidebar.BackgroundTransparency = 1
 sidebar.Parent = mainFrame
 
-local sidebarList = Instance.new("UIListLayout")
-sidebarList.SortOrder = Enum.SortOrder.LayoutOrder
-sidebarList.Padding = UDim.new(0, 5)
-sidebarList.Parent = sidebar
+-- Conteúdo
+local contentArea = Instance.new("Frame")
+contentArea.Size = UDim2.new(1, -170, 1, -70)
+contentArea.Position = UDim2.new(0, 170, 0, 65)
+contentArea.BackgroundTransparency = 1
+contentArea.Parent = mainFrame
 
--- Área de conteúdo
-local contentFrame = Instance.new("Frame")
-contentFrame.Size = UDim2.new(1, -160, 1, -55)
-contentFrame.Position = UDim2.new(0, 160, 0, 55)
-contentFrame.BackgroundTransparency = 1
-contentFrame.Parent = mainFrame
-
-local currentTab = nil
-
-local function createTab(name, content)
+-- Função aba
+local function createTabButton(name, yPos, tabContent)
     local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(1, 0, 0, 35)
-    btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    btn.Size = UDim2.new(1, 0, 0, 40)
+    btn.Position = UDim2.new(0, 0, 0, yPos)
+    btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     btn.Text = name
     btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextScaled = true
     btn.Font = Enum.Font.GothamSemibold
-    btn.TextSize = 16
     btn.Parent = sidebar
 
-    local btnCorner = Instance.new("UICorner")
-    btnCorner.CornerRadius = UDim.new(0, 8)
-    btnCorner.Parent = btn
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 8)
+    corner.Parent = btn
 
     btn.MouseButton1Click:Connect(function()
-        if currentTab then currentTab.Visible = false end
-        content.Visible = true
-        currentTab = content
-
-        for _, b in ipairs(sidebar:GetChildren()) do
-            if b:IsA("TextButton") then b.BackgroundColor3 = Color3.fromRGB(50, 50, 50) end
+        for _, child in ipairs(contentArea:GetChildren()) do
+            if child:IsA("Frame") then child.Visible = false end
         end
-        btn.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+        tabContent.Visible = true
+        
+        for _, b in ipairs(sidebar:GetChildren()) do
+            if b:IsA("TextButton") then b.BackgroundColor3 = Color3.fromRGB(40, 40, 40) end
+        end
+        btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     end)
+    
     return btn
 end
 
--- Aba Main
-local mainContent = Instance.new("ScrollingFrame")
-mainContent.Size = UDim2.new(1, 0, 1, 0)
-mainContent.BackgroundTransparency = 1
-mainContent.Visible = true
-mainContent.Parent = contentFrame
+-- Abas (simples por enquanto)
+local tabs = {}
 
-local mainText = Instance.new("TextLabel")
-mainText.Size = UDim2.new(1, 0, 1, 0)
-mainText.BackgroundTransparency = 1
-mainText.Text = "v1.2 - Bot Exclusivo\n\nFeatures:\n• Speed (slider)\n• Noclip\n• Fly (WASD + Space/Ctrl)\n• ESP Highlight\n\nClique na aba 'Bot' e teste tudo!"
-mainText.TextColor3 = Color3.fromRGB(220, 220, 220)
-mainText.Font = Enum.Font.Gotham
-mainText.TextSize = 18
-mainText.TextWrapped = true
-mainText.Parent = mainContent
+local mainTab = Instance.new("Frame")
+mainTab.Size = UDim2.new(1, 0, 1, 0)
+mainTab.BackgroundTransparency = 1
+mainTab.Visible = false
+mainTab.Parent = contentArea
 
-createTab("Main", mainContent)
+local mainLabel = Instance.new("TextLabel")
+mainLabel.Size = UDim2.new(1, 0, 1, 0)
+mainLabel.BackgroundTransparency = 1
+mainLabel.Text = "Main\n\nUI carregou! Agora vamos adicionar as features."
+mainLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
+mainLabel.TextScaled = true
+mainLabel.TextWrapped = true
+mainLabel.Font = Enum.Font.Gotham
+mainLabel.Parent = mainTab
 
--- Aba Bot (features completas)
-local botContent = Instance.new("ScrollingFrame")
-botContent.Size = UDim2.new(1, 0, 1, 0)
-botContent.BackgroundTransparency = 1
-botContent.Visible = false
-botContent.Parent = contentFrame
+table.insert(tabs, {name = "Main", content = mainTab})
 
--- Speed
-local speedLabel = Instance.new("TextLabel")
-speedLabel.Size = UDim2.new(1, 0, 0, 25)
-speedLabel.Text = "Speed:"
-speedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-speedLabel.Font = Enum.Font.GothamBold
-speedLabel.TextSize = 16
-speedLabel.Parent = botContent
+local botTab = Instance.new("Frame")
+botTab.Size = UDim2.new(1, 0, 1, 0)
+botTab.BackgroundTransparency = 1
+botTab.Visible = false
+botTab.Parent = contentArea
 
-local speedValue = 16
-local speedSlider = Instance.new("Frame")
-speedSlider.Size = UDim2.new(1, 0, 0, 20)
-speedSlider.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-speedSlider.Parent = botContent
+local botLabel = Instance.new("TextLabel")
+botLabel.Size = UDim2.new(1, 0, 1, 0)
+botLabel.BackgroundTransparency = 1
+botLabel.Text = "Bot\n\nFeatures em breve..."
+botLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
+botLabel.TextScaled = true
+botLabel.TextWrapped = true
+botLabel.Font = Enum.Font.Gotham
+botLabel.Parent = botTab
 
-local speedFill = Instance.new("Frame")
-speedFill.Size = UDim2.new(0.3, 0, 1, 0)
-speedFill.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-speedFill.Parent = speedSlider
+table.insert(tabs, {name = "Bot", content = botTab})
 
-speedSlider.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        local conn
-        conn = RunService.RenderStepped:Connect(function()
-            local mouse = UserInputService:GetMouseLocation()
-            local rel = math.clamp((mouse.X - speedSlider.AbsolutePosition.X) / speedSlider.AbsoluteSize.X, 0, 1)
-            speedFill.Size = UDim2.new(rel, 0, 1, 0)
-            speedValue = 16 + math.floor(rel * 184)
-            speedLabel.Text = "Speed: " .. speedValue
-            if player.Character and player.Character:FindFirstChild("Humanoid") then
-                player.Character.Humanoid.WalkSpeed = speedValue
-            end
-        end)
-        input.Changed:Connect(function() conn:Disconnect() end)
-    end
-end)
-
--- Noclip
-local noclipBtn = Instance.new("TextButton")
-noclipBtn.Size = UDim2.new(1, 0, 0, 35)
-noclipBtn.Position = UDim2.new(0, 0, 0, 60)
-noclipBtn.Text = "Noclip: OFF"
-noclipBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-noclipBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-noclipBtn.Font = Enum.Font.GothamBold
-noclipBtn.TextSize = 16
-noclipBtn.Parent = botContent
-
-local noclipOn = false
-noclipBtn.MouseButton1Click:Connect(function()
-    noclipOn = not noclipOn
-    noclipBtn.Text = "Noclip: " .. (noclipOn and "ON" or "OFF")
-    noclipBtn.BackgroundColor3 = noclipOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
-end)
-
-RunService.Stepped:Connect(function()
-    if noclipOn and player.Character then
-        for _, part in pairs(player.Character:GetDescendants()) do
-            if part:IsA("BasePart") then part.CanCollide = false end
-        end
-    end
-end)
-
--- Fly
-local flyBtn = Instance.new("TextButton")
-flyBtn.Size = UDim2.new(1, 0, 0, 35)
-flyBtn.Position = UDim2.new(0, 0, 0, 110)
-flyBtn.Text = "Fly: OFF"
-flyBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-flyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-flyBtn.Font = Enum.Font.GothamBold
-flyBtn.TextSize = 16
-flyBtn.Parent = botContent
-
-local flyOn = false
-local bv, bg
-flyBtn.MouseButton1Click:Connect(function()
-    flyOn = not flyOn
-    flyBtn.Text = "Fly: " .. (flyOn and "ON" or "OFF")
-    flyBtn.BackgroundColor3 = flyOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
-    if flyOn then
-        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            bv = Instance.new("BodyVelocity")
-            bv.MaxForce = Vector3.new(4000, 4000, 4000)
-            bv.Parent = player.Character.HumanoidRootPart
-            bg = Instance.new("BodyGyro")
-            bg.MaxTorque = Vector3.new(4000, 4000, 4000)
-            bg.CFrame = player.Character.HumanoidRootPart.CFrame
-            bg.Parent = player.Character.HumanoidRootPart
-        end
-    else
-        if bv then bv:Destroy() end
-        if bg then bg:Destroy() end
-    end
-end)
-
--- ESP Highlight
-local espBtn = Instance.new("TextButton")
-espBtn.Size = UDim2.new(1, 0, 0, 35)
-espBtn.Position = UDim2.new(0, 0, 0, 160)
-espBtn.Text = "ESP: OFF"
-espBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-espBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-espBtn.Font = Enum.Font.GothamBold
-espBtn.TextSize = 16
-espBtn.Parent = botContent
-
-local espOn = false
-local highlights = {}
-
-local function addHighlight(char)
-    if char == player.Character or highlights[char] then return end
-    local hl = Instance.new("Highlight")
-    hl.FillColor = Color3.fromRGB(255, 0, 0)
-    hl.OutlineColor = Color3.fromRGB(255, 255, 0)
-    hl.FillTransparency = 0.5
-    hl.OutlineTransparency = 0
-    hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-    hl.Adornee = char
-    hl.Parent = char
-
-    local nameGui = Instance.new("BillboardGui")
-    nameGui.Size = UDim2.new(0, 200, 0, 50)
-    nameGui.StudsOffset = Vector3.new(0, 3, 0)
-    nameGui.AlwaysOnTop = true
-    nameGui.Parent = char:FindFirstChild("Head") or char
-
-    local nameText = Instance.new("TextLabel")
-    nameText.Size = UDim2.new(1, 0, 1, 0)
-    nameText.BackgroundTransparency = 1
-    nameText.Text = char.Name
-    nameText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    nameText.TextScaled = true
-    nameText.Font = Enum.Font.GothamBold
-    nameText.Parent = nameGui
-
-    highlights[char] = {hl = hl, gui = nameGui}
-end
-
-local function removeHighlight(char)
-    if highlights[char] then
-        if highlights[char].hl then highlights[char].hl:Destroy() end
-        if highlights[char].gui then highlights[char].gui:Destroy() end
-        highlights[char] = nil
-    end
-end
-
-espBtn.MouseButton1Click:Connect(function()
-    espOn = not espOn
-    espBtn.Text = "ESP: " .. (espOn and "ON" or "OFF")
-    espBtn.BackgroundColor3 = espOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
-
-    if espOn then
-        for _, p in ipairs(Players:GetPlayers()) do
-            if p \~= player and p.Character then addHighlight(p.Character) end
-        end
-    else
-        for char in pairs(highlights) do removeHighlight(char) end
-    end
-end)
-
-Players.PlayerAdded:Connect(function(p)
-    p.CharacterAdded:Connect(function(char)
-        if espOn then addHighlight(char) end
-    end)
-end)
-
-for _, p in ipairs(Players:GetPlayers()) do
-    if p.Character and espOn then addHighlight(p.Character) end
-    p.CharacterAdded:Connect(function(char)
-        if espOn then addHighlight(char) end
-    end)
-end
-
-createTab("Bot", botContent)
-
--- Aba Créditos
-local creditsContent = Instance.new("ScrollingFrame")
-creditsContent.Size = UDim2.new(1, 0, 1, 0)
-creditsContent.BackgroundTransparency = 1
-creditsContent.Visible = false
-creditsContent.Parent = contentFrame
+local creditsTab = Instance.new("Frame")
+creditsTab.Size = UDim2.new(1, 0, 1, 0)
+creditsTab.BackgroundTransparency = 1
+creditsTab.Visible = false
+creditsTab.Parent = contentArea
 
 local creditsLabel = Instance.new("TextLabel")
 creditsLabel.Size = UDim2.new(1, 0, 1, 0)
 creditsLabel.BackgroundTransparency = 1
-creditsLabel.Text = "Feito por:\n• Kevynmama hub\n\nObrigado por usar!\nBot exclusivo pro seu jogo."
+creditsLabel.Text = "Créditos\nFeito por:\n• Kevynmama hub"
 creditsLabel.TextColor3 = Color3.fromRGB(180, 180, 255)
-creditsLabel.Font = Enum.Font.Gotham
-creditsLabel.TextSize = 18
+creditsLabel.TextScaled = true
 creditsLabel.TextWrapped = true
-creditsLabel.Parent = creditsContent
+creditsLabel.Font = Enum.Font.Gotham
+creditsLabel.Parent = creditsTab
 
-createTab("Créditos", creditsContent)
+table.insert(tabs, {name = "Créditos", content = creditsTab})
 
--- Toggle abrir/fechar
-toggleBtn.MouseButton1Click:Connect(function()
-    mainFrame.Visible = not mainFrame.Visible
-    toggleBtn.Text = mainFrame.Visible and "X" or "BOT"
-end)
+-- Cria botões
+local yOffset = 0
+for i, tab in ipairs(tabs) do
+    createTabButton(tab.name, yOffset, tab.content)
+    yOffset = yOffset + 50
+end
+
+-- Abre Main
+if #tabs > 0 then tabs[1].content.Visible = true end
 
 -- Rainbow
 local rainbowSpeed = 5
@@ -369,4 +204,28 @@ RunService.Heartbeat:Connect(function()
     if mainFrame.Visible then updateRainbow() end
 end)
 
-print("[OK] UI carregada! Botão 'BOT' no canto superior esquerdo. Clique ou Insert/E para abrir.")
+-- Toggle GUI
+local opened = false
+local function toggleGUI()
+    opened = not opened
+    if opened then
+        mainFrame.Visible = true
+        toggleBtn.Text = "X"
+        toggleStroke.Color = Color3.fromRGB(0, 255, 0)
+    else
+        toggleBtn.Text = "MENU"
+        toggleStroke.Color = Color3.fromRGB(255, 0, 0)
+        mainFrame.Visible = false
+    end
+end
+
+toggleBtn.MouseButton1Click:Connect(toggleGUI)
+
+UserInputService.InputBegan:Connect(function(input, processed)
+    if processed then return end
+    if input.KeyCode == Enum.KeyCode.Insert or input.KeyCode == Enum.KeyCode.E then
+        toggleGUI()
+    end
+end)
+
+print("[OK] Base carregada! Botão MENU no canto superior esquerdo. Clique ou Insert/E para abrir.")
