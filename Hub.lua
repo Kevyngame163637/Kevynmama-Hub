@@ -1,4 +1,4 @@
--- kevynmama-hub v1.3
+-- kevynmama-hub v1.6
 -- Script para Roblox Executor com UI funcional e sistema de versão
 
 -- Carrega a biblioteca Rayfield
@@ -6,7 +6,7 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 -- Inicializa a UI
 local Window = Rayfield:CreateWindow({
-    Name = "kevynmama-hub v1.3",
+    Name = "kevynmama-hub v1.6",
     LoadingTitle = "Carregando kevynmama-hub...",
     LoadingSubtitle = "por Kevyn Mal",
     ConfigurationSaving = {
@@ -45,17 +45,18 @@ local CreditsTab = Window:CreateTab("Créditos", nil)
 
 -- Seção de boas-vindas e versão atual
 local WelcomeSection = MainTab:CreateSection("Boas-vindas")
-local WelcomeLabel = MainTab:CreateLabel("Bem-vindo ao kevynmama-hub v1.3!")
-local VersionLabel = MainTab:CreateLabel("Versão atual: 1.3 (Última atualização: 12/02/2026)")
+local WelcomeLabel = MainTab:CreateLabel("Bem-vindo ao kevynmama-hub v1.6!")
+local VersionLabel = MainTab:CreateLabel("Versão atual: 1.6 (Última atualização: 12/02/2026)")
 
 -- Seção de atualizações
-local UpdateSection = MainTab:CreateSection("Nova Atualização (v1.3)")
-local Update1 = MainTab:CreateLabel("🔹 99 Noites e YAHRM HUB movidos para 'Scripts de Fora'.")
-local Update2 = MainTab:CreateLabel("🔹 Removidos SimpleSpy e Dark Hub.")
-local Update3 = MainTab:CreateLabel("🔹 Melhorias na organização dos scripts.")
+local UpdateSection = MainTab:CreateSection("Nova Atualização (v1.6)")
+local Update1 = MainTab:CreateLabel("🔹 Emotes movido para 'Scripts de Casa'.")
+local Update2 = MainTab:CreateLabel("🔹 Infinite Yield movido para 'Scripts de Fora'.")
+local Update3 = MainTab:CreateLabel("🔹 Removidos SimpleSpy e Dark Hub.")
+local Update4 = MainTab:CreateLabel("🔹 Versão atualizada para 1.6.")
 
--- Seção de Scripts de Casa (v1.3)
-local CasaSection = ScriptsTab:CreateSection("Scripts de Casa (v1.3)")
+-- Seção de Scripts de Casa (v1.6)
+local CasaSection = ScriptsTab:CreateSection("Scripts de Casa (v1.6)")
 
 -- 1. Script: Invisible
 local InvisibleButton = ScriptsTab:CreateButton({
@@ -80,23 +81,23 @@ local InvisibleButton = ScriptsTab:CreateButton({
     end
 })
 
--- 2. Script: Infinite Yield
-local InfiniteYieldButton = ScriptsTab:CreateButton({
-    Name = "Ativar Infinite Yield",
+-- 2. Script: Emotes
+local EmotesButton = ScriptsTab:CreateButton({
+    Name = "Ativar Emotes",
     Callback = function()
         local success, err = pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua"))()
         end)
         if success then
             Rayfield:Notify({
                 Title = "Sucesso",
-                Content = "Infinite Yield foi ativado!",
+                Content = "Emotes foram ativados!",
                 Duration = 5,
             })
         else
             Rayfield:Notify({
                 Title = "Erro",
-                Content = "Falha ao carregar Infinite Yield: " .. err,
+                Content = "Falha ao carregar Emotes: " .. err,
                 Duration = 5,
             })
         end
@@ -126,8 +127,8 @@ local FatesAdminButton = ScriptsTab:CreateButton({
     end
 })
 
--- Seção de Scripts de Fora (v1.3)
-local ForaSection = ScriptsTab:CreateSection("Scripts de Fora (v1.3)")
+-- Seção de Scripts de Fora (v1.6)
+local ForaSection = ScriptsTab:CreateSection("Scripts de Fora (v1.6)")
 
 -- 1. Script: 99 Noites
 local NoitesButton = ScriptsTab:CreateButton({
@@ -233,23 +234,23 @@ local NamelessButton = ScriptsTab:CreateButton({
     end
 })
 
--- 4. Script: Emotes
-local EmotesButton = ScriptsTab:CreateButton({
-    Name = "Ativar Emotes",
+-- 4. Script: Infinite Yield
+local InfiniteYieldButton = ScriptsTab:CreateButton({
+    Name = "Ativar Infinite Yield",
     Callback = function()
         local success, err = pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
         end)
         if success then
             Rayfield:Notify({
-                Title = "Emotes",
-                Content = "Emotes foram ativados!",
+                Title = "Sucesso",
+                Content = "Infinite Yield foi ativado!",
                 Duration = 5,
             })
         else
             Rayfield:Notify({
                 Title = "Erro",
-                Content = "Falha ao carregar Emotes: " .. err,
+                Content = "Falha ao carregar Infinite Yield: " .. err,
                 Duration = 5,
             })
         end
@@ -282,7 +283,7 @@ local RakeButton = ScriptsTab:CreateButton({
 -- Seção de Créditos
 local CreditsSection = CreditsTab:CreateSection("Créditos")
 local DevLabel = CreditsTab:CreateLabel("Desenvolvido por: Kevyn Mal")
-local VersionCredit = CreditsTab:CreateLabel("Versão atual: 1.3")
+local VersionCredit = CreditsTab:CreateLabel("Versão atual: 1.6")
 local User1 = CreditsTab:CreateLabel("🔹 Kevyngame163637")
 local User2 = CreditsTab:CreateLabel("🔹 Kaiozinhu12")
 
@@ -290,7 +291,7 @@ local User2 = CreditsTab:CreateLabel("🔹 Kaiozinhu12")
 game.Players.LocalPlayer.Chatted:Connect(function(msg)
     if msg:lower() == "!bemvindo" then
         game.StarterGui:SetCore("ChatMakeSystemMessage", {
-            Text = "Bem-vindo ao kevynmama-hub v1.3! Digite !ajuda para ver os comandos.",
+            Text = "Bem-vindo ao kevynmama-hub v1.6! Digite !ajuda para ver os comandos.",
             Color = Color3.fromRGB(255, 87, 34)
         })
     elseif msg:lower() == "!ajuda" then
