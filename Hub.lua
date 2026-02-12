@@ -1,8 +1,8 @@
 -- kevynmama-hub v1.2
 -- Script para Roblox Executor com UI funcional e sistema de versão
 
--- Carrega a biblioteca Rayfield (mais estável e popular)
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+-- Carrega a biblioteca Rayfield
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 -- Inicializa a UI
 local Window = Rayfield:CreateWindow({
@@ -78,23 +78,46 @@ local CasaButton = ScriptsTab:CreateButton({
 })
 
 -- Seção de Scripts de Fora
-local ForaSection = ScriptsTab:CreateSection("Script de Fora (v1.2)")
-local ForaButton = ScriptsTab:CreateButton({
-    Name = "Ativar Script de Fora",
+local ForaSection = ScriptsTab:CreateSection("Scripts de Fora (v1.2)")
+
+-- Botão para Nameless Admin
+local NamelessButton = ScriptsTab:CreateButton({
+    Name = "Ativar Nameless Admin",
     Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))()
         Rayfield:Notify({
-            Title = "Script de Fora",
-            Content = "Script de Fora (v1.2) ativado!",
+            Title = "Nameless Admin",
+            Content = "Nameless Admin foi ativado!",
             Duration = 5,
             Image = nil,
-            Actions = {
-                Ignore = {
-                    Name = "OK",
-                    Callback = function()
-                        print("Script de Fora ativado!")
-                    end
-                }
-            }
+        })
+    end
+})
+
+-- Botão para Emotes
+local EmotesButton = ScriptsTab:CreateButton({
+    Name = "Ativar Emotes",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua"))()
+        Rayfield:Notify({
+            Title = "Emotes",
+            Content = "Emotes foram ativados!",
+            Duration = 5,
+            Image = nil,
+        })
+    end
+})
+
+-- Botão para The Rake Remastered
+local RakeButton = ScriptsTab:CreateButton({
+    Name = "Ativar The Rake Remastered",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Djskinybinn/The-Rake-Remastered-Script-Keyless/refs/heads/main/ObfuscatedRakeScript.lua", true))()
+        Rayfield:Notify({
+            Title = "The Rake Remastered",
+            Content = "The Rake Remastered foi ativado!",
+            Duration = 5,
+            Image = nil,
         })
     end
 })
