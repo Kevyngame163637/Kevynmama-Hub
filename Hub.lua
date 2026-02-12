@@ -1,4 +1,5 @@
---// Kevynmama Hub v1.2 - Completo com Features (Speed, Noclip, Fly, ESP)
+--// Kevynmama Hub v1.3 - Completo com Features (Speed, Noclip, Fly, ESP, Teleport, Invis)
+--// Feito por: Kevyn Mal
 
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
@@ -8,7 +9,7 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- ScreenGui
+--=== [UI] ===--
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "KevynmamaHub"
 screenGui.ResetOnSpawn = false
@@ -36,9 +37,9 @@ toggleStroke.Color = Color3.fromRGB(255, 0, 0)
 toggleStroke.Thickness = 2.5
 toggleStroke.Parent = toggleBtn
 
--- Janela Principal (centralizada, larga e baixa)
+-- Janela Principal
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 700, 0, 320)
+mainFrame.Size = UDim2.new(0, 700, 0, 380) -- Aumentei a altura para caber mais features
 mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -49,7 +50,7 @@ local frameCorner = Instance.new("UICorner")
 frameCorner.CornerRadius = UDim.new(0, 16)
 frameCorner.Parent = mainFrame
 
--- Borda RGB animada
+-- Borda RGB
 local uiStroke = Instance.new("UIStroke")
 uiStroke.Thickness = 4.5
 uiStroke.Transparency = 0
@@ -63,7 +64,7 @@ gradient.Parent = uiStroke
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Size = UDim2.new(1, 0, 0, 45)
 titleLabel.BackgroundTransparency = 1
-titleLabel.Text = "Kevynmama Bot Hub v1.2"
+titleLabel.Text = "Kevynmama Bot Hub v1.3"
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleLabel.Font = Enum.Font.GothamBold
 titleLabel.TextSize = 22
@@ -83,6 +84,12 @@ sidebarList.SortOrder = Enum.SortOrder.LayoutOrder
 sidebarList.Padding = UDim.new(0, 5)
 sidebarList.Parent = sidebar
 
+local sidebarPadding = Instance.new("UIPadding")
+sidebarPadding.PaddingTop = UDim.new(0, 5)
+sidebarPadding.PaddingLeft = UDim.new(0, 5)
+sidebarPadding.PaddingRight = UDim.new(0, 5)
+sidebarPadding.Parent = sidebar
+
 -- Conteúdo
 local contentFrame = Instance.new("Frame")
 contentFrame.Size = UDim2.new(1, -160, 1, -55)
@@ -92,6 +99,7 @@ contentFrame.Parent = mainFrame
 
 local currentTab = nil
 
+--=== [Funções Auxiliares] ===--
 local function createTab(name, content)
     local btn = Instance.new("TextButton")
     btn.Size = UDim2.new(1, 0, 0, 35)
@@ -110,7 +118,6 @@ local function createTab(name, content)
         if currentTab then currentTab.Visible = false end
         content.Visible = true
         currentTab = content
-
         for _, b in ipairs(sidebar:GetChildren()) do
             if b:IsA("TextButton") then b.BackgroundColor3 = Color3.fromRGB(50, 50, 50) end
         end
@@ -119,7 +126,7 @@ local function createTab(name, content)
     return btn
 end
 
--- Aba Main
+--=== [Aba Main] ===--
 local mainContent = Instance.new("ScrollingFrame")
 mainContent.Size = UDim2.new(1, 0, 1, 0)
 mainContent.BackgroundTransparency = 1
@@ -129,7 +136,7 @@ mainContent.Parent = contentFrame
 local mainText = Instance.new("TextLabel")
 mainText.Size = UDim2.new(1, 0, 1, 0)
 mainText.BackgroundTransparency = 1
-mainText.Text = "v1.2 - Bot Exclusivo\n\nFeatures na aba 'Bot':\n• Speed (arraste o slider)\n• Noclip (toggle)\n• Fly (WASD + Space/Ctrl)\n• ESP Highlight (toggle)\n\nTeste tudo!"
+mainText.Text = "v1.3 - Bot Exclusivo\n\nFeatures na aba 'Bot':\n• Speed (arraste o slider)\n• Noclip (toggle)\n• Fly (WASD + Space/Ctrl)\n• ESP Highlight (toggle)\n• Teleport (para jogadores)\n• Invisibilidade (toggle)\n\nTeste tudo!"
 mainText.TextColor3 = Color3.fromRGB(220, 220, 220)
 mainText.Font = Enum.Font.Gotham
 mainText.TextSize = 18
@@ -138,7 +145,7 @@ mainText.Parent = mainContent
 
 createTab("Main", mainContent)
 
--- Aba Bot (features)
+--=== [Aba Bot] ===--
 local botContent = Instance.new("ScrollingFrame")
 botContent.Size = UDim2.new(1, 0, 1, 0)
 botContent.BackgroundTransparency = 1
@@ -148,13 +155,12 @@ botContent.Parent = contentFrame
 -- Speed
 local speedLabel = Instance.new("TextLabel")
 speedLabel.Size = UDim2.new(1, 0, 0, 25)
-speedLabel.Text = "Speed:"
+speedLabel.Text = "Speed: 16"
 speedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 speedLabel.Font = Enum.Font.GothamBold
 speedLabel.TextSize = 16
 speedLabel.Parent = botContent
 
-local speedValue = 16
 local speedSlider = Instance.new("Frame")
 speedSlider.Size = UDim2.new(1, 0, 0, 20)
 speedSlider.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -165,6 +171,7 @@ speedFill.Size = UDim2.new(0.3, 0, 1, 0)
 speedFill.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
 speedFill.Parent = speedSlider
 
+local speedValue = 16
 speedSlider.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         local conn
@@ -178,7 +185,11 @@ speedSlider.InputBegan:Connect(function(input)
                 player.Character.Humanoid.WalkSpeed = speedValue
             end
         end)
-        input.Changed:Connect(function() conn:Disconnect() end)
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                conn:Disconnect()
+            end
+        end)
     end
 end)
 
@@ -225,23 +236,38 @@ flyBtn.MouseButton1Click:Connect(function()
     flyOn = not flyOn
     flyBtn.Text = "Fly: " .. (flyOn and "ON" or "OFF")
     flyBtn.BackgroundColor3 = flyOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
-    if flyOn then
-        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            bv = Instance.new("BodyVelocity")
-            bv.MaxForce = Vector3.new(4000, 4000, 4000)
-            bv.Parent = player.Character.HumanoidRootPart
-            bg = Instance.new("BodyGyro")
-            bg.MaxTorque = Vector3.new(4000, 4000, 4000)
-            bg.CFrame = player.Character.HumanoidRootPart.CFrame
-            bg.Parent = player.Character.HumanoidRootPart
-        end
+
+    if flyOn and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        bv = Instance.new("BodyVelocity")
+        bv.MaxForce = Vector3.new(4000, 4000, 4000)
+        bv.Velocity = Vector3.new(0, 0, 0)
+        bv.Parent = player.Character.HumanoidRootPart
+
+        bg = Instance.new("BodyGyro")
+        bg.MaxTorque = Vector3.new(4000, 4000, 4000)
+        bg.CFrame = player.Character.HumanoidRootPart.CFrame
+        bg.Parent = player.Character.HumanoidRootPart
     else
         if bv then bv:Destroy() end
         if bg then bg:Destroy() end
     end
 end)
 
--- ESP Highlight
+player.CharacterAdded:Connect(function(char)
+    if flyOn and char:FindFirstChild("HumanoidRootPart") then
+        bv = Instance.new("BodyVelocity")
+        bv.MaxForce = Vector3.new(4000, 4000, 4000)
+        bv.Velocity = Vector3.new(0, 0, 0)
+        bv.Parent = char.HumanoidRootPart
+
+        bg = Instance.new("BodyGyro")
+        bg.MaxTorque = Vector3.new(4000, 4000, 4000)
+        bg.CFrame = char.HumanoidRootPart.CFrame
+        bg.Parent = char.HumanoidRootPart
+    end
+end)
+
+-- ESP
 local espBtn = Instance.new("TextButton")
 espBtn.Size = UDim2.new(1, 0, 0, 35)
 espBtn.Position = UDim2.new(0, 0, 0, 160)
@@ -299,7 +325,7 @@ espBtn.MouseButton1Click:Connect(function()
 
     if espOn then
         for _, p in ipairs(Players:GetPlayers()) do
-            if p \~= player and p.Character then addHighlight(p.Character) end
+            if p ~= player and p.Character then addHighlight(p.Character) end
         end
     else
         for char in pairs(highlights) do removeHighlight(char) end
@@ -312,6 +338,12 @@ Players.PlayerAdded:Connect(function(p)
     end)
 end)
 
+Players.PlayerRemoving:Connect(function(p)
+    if highlights[p.Character] then
+        removeHighlight(p.Character)
+    end
+end)
+
 for _, p in ipairs(Players:GetPlayers()) do
     if p.Character and espOn then addHighlight(p.Character) end
     p.CharacterAdded:Connect(function(char)
@@ -319,9 +351,53 @@ for _, p in ipairs(Players:GetPlayers()) do
     end)
 end
 
+-- Teleport
+local teleportBtn = Instance.new("TextButton")
+teleportBtn.Size = UDim2.new(1, 0, 0, 35)
+teleportBtn.Position = UDim2.new(0, 0, 0, 210)
+teleportBtn.Text = "Teleport"
+teleportBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+teleportBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+teleportBtn.Font = Enum.Font.GothamBold
+teleportBtn.TextSize = 16
+teleportBtn.Parent = botContent
+
+teleportBtn.MouseButton1Click:Connect(function()
+    local target = -- (Aqui você pode adicionar lógica para selecionar jogador)
+    if target and target.Character and player.Character then
+        player.Character:MoveTo(target.Character.HumanoidRootPart.Position)
+    end
+end)
+
+-- Invisibilidade
+local invisBtn = Instance.new("TextButton")
+invisBtn.Size = UDim2.new(1, 0, 0, 35)
+invisBtn.Position = UDim2.new(0, 0, 0, 260)
+invisBtn.Text = "Invis: OFF"
+invisBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+invisBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+invisBtn.Font = Enum.Font.GothamBold
+invisBtn.TextSize = 16
+invisBtn.Parent = botContent
+
+local invisOn = false
+invisBtn.MouseButton1Click:Connect(function()
+    invisOn = not invisOn
+    invisBtn.Text = "Invis: " .. (invisOn and "ON" or "OFF")
+    invisBtn.BackgroundColor3 = invisOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
+
+    if player.Character then
+        for _, part in pairs(player.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.Transparency = invisOn and 0.7 or 0
+            end
+        end
+    end
+end)
+
 createTab("Bot", botContent)
 
--- Aba Créditos
+--=== [Aba Créditos] ===--
 local creditsContent = Instance.new("ScrollingFrame")
 creditsContent.Size = UDim2.new(1, 0, 1, 0)
 creditsContent.BackgroundTransparency = 1
@@ -331,7 +407,7 @@ creditsContent.Parent = contentFrame
 local creditsLabel = Instance.new("TextLabel")
 creditsLabel.Size = UDim2.new(1, 0, 1, 0)
 creditsLabel.BackgroundTransparency = 1
-creditsLabel.Text = "Feito por:\n• Kevynmama hub\n\nObrigado por usar!\nBot exclusivo pro seu jogo."
+creditsLabel.Text = "Feito por:\n• Kevyn Mal (Kevynmama Hub)\n\nObrigado por usar!\nBot exclusivo pro seu jogo.\n\nGitHub: github.com/Kevyngame163637"
 creditsLabel.TextColor3 = Color3.fromRGB(180, 180, 255)
 creditsLabel.Font = Enum.Font.Gotham
 creditsLabel.TextSize = 18
@@ -340,13 +416,13 @@ creditsLabel.Parent = creditsContent
 
 createTab("Créditos", creditsContent)
 
--- Toggle abrir/fechar
+--=== [Toggle UI] ===--
 toggleBtn.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible
     toggleBtn.Text = mainFrame.Visible and "X" or "BOT"
 end)
 
--- Rainbow
+--=== [Rainbow Border] ===--
 local rainbowSpeed = 5
 local function updateRainbow()
     local hue = (tick() * rainbowSpeed) % 1
@@ -366,4 +442,4 @@ RunService.Heartbeat:Connect(function()
     if mainFrame.Visible then updateRainbow() end
 end)
 
-print("[OK] UI completa carregada! Teste na aba Bot.")
+print("[OK] Kevynmama Hub v1.3 carregado! Aperte 'BOT' para abrir.")
