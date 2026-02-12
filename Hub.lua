@@ -50,9 +50,9 @@ local VersionLabel = MainTab:CreateLabel("Versão atual: 1.3 (Última atualizaç
 
 -- Seção de atualizações
 local UpdateSection = MainTab:CreateSection("Nova Atualização (v1.3)")
-local Update1 = MainTab:CreateLabel("🔹 Adicionados novos scripts de casa: Invisible, Infinite Yield, Dex Explorer, SimpleSpy, Dark Hub, Fates Admin, 99 Noites e YAHRM HUB.")
-local Update2 = MainTab:CreateLabel("🔹 Versão atualizada para 1.3.")
-local Update3 = MainTab:CreateLabel("🔹 Melhorias na organização e segurança dos scripts.")
+local Update1 = MainTab:CreateLabel("🔹 99 Noites e YAHRM HUB movidos para 'Scripts de Fora'.")
+local Update2 = MainTab:CreateLabel("🔹 Removidos SimpleSpy e Dark Hub.")
+local Update3 = MainTab:CreateLabel("🔹 Melhorias na organização dos scripts.")
 
 -- Seção de Scripts de Casa (v1.3)
 local CasaSection = ScriptsTab:CreateSection("Scripts de Casa (v1.3)")
@@ -103,76 +103,7 @@ local InfiniteYieldButton = ScriptsTab:CreateButton({
     end
 })
 
--- 3. Script: Dex Explorer
-local DexButton = ScriptsTab:CreateButton({
-    Name = "Ativar Dex Explorer",
-    Callback = function()
-        local success, err = pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua"))()
-        end)
-        if success then
-            Rayfield:Notify({
-                Title = "Sucesso",
-                Content = "Dex Explorer foi ativado!",
-                Duration = 5,
-            })
-        else
-            Rayfield:Notify({
-                Title = "Erro",
-                Content = "Falha ao carregar Dex Explorer: " .. err,
-                Duration = 5,
-            })
-        end
-    end
-})
-
--- 4. Script: SimpleSpy
-local SimpleSpyButton = ScriptsTab:CreateButton({
-    Name = "Ativar SimpleSpy",
-    Callback = function()
-        local success, err = pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/78n/SimpleSpy/main/SimpleSpy.lua"))()
-        end)
-        if success then
-            Rayfield:Notify({
-                Title = "Sucesso",
-                Content = "SimpleSpy foi ativado!",
-                Duration = 5,
-            })
-        else
-            Rayfield:Notify({
-                Title = "Erro",
-                Content = "Falha ao carregar SimpleSpy: " .. err,
-                Duration = 5,
-            })
-        end
-    end
-})
-
--- 5. Script: Dark Hub
-local DarkHubButton = ScriptsTab:CreateButton({
-    Name = "Ativar Dark Hub",
-    Callback = function()
-        local success, err = pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/Robloxian3000/Dark-Hub/main/Init"))()
-        end)
-        if success then
-            Rayfield:Notify({
-                Title = "Sucesso",
-                Content = "Dark Hub foi ativado!",
-                Duration = 5,
-            })
-        else
-            Rayfield:Notify({
-                Title = "Erro",
-                Content = "Falha ao carregar Dark Hub: " .. err,
-                Duration = 5,
-            })
-        end
-    end
-})
-
--- 6. Script: Fates Admin
+-- 3. Script: Fates Admin
 local FatesAdminButton = ScriptsTab:CreateButton({
     Name = "Ativar Fates Admin",
     Callback = function()
@@ -195,7 +126,10 @@ local FatesAdminButton = ScriptsTab:CreateButton({
     end
 })
 
--- 7. Script: 99 Noites
+-- Seção de Scripts de Fora (v1.3)
+local ForaSection = ScriptsTab:CreateSection("Scripts de Fora (v1.3)")
+
+-- 1. Script: 99 Noites
 local NoitesButton = ScriptsTab:CreateButton({
     Name = "Ativar 99 Noites",
     Callback = function()
@@ -218,7 +152,7 @@ local NoitesButton = ScriptsTab:CreateButton({
     end
 })
 
--- 8. Script: YAHRM HUB
+-- 2. Script: YAHRM HUB
 local YahrmButton = ScriptsTab:CreateButton({
     Name = "Ativar YAHRM HUB",
     Callback = function()
@@ -276,10 +210,7 @@ local YahrmButton = ScriptsTab:CreateButton({
     end
 })
 
--- Seção de Scripts de Fora (v1.3)
-local ForaSection = ScriptsTab:CreateSection("Scripts de Fora (v1.3)")
-
--- Botão para Nameless Admin
+-- 3. Script: Nameless Admin
 local NamelessButton = ScriptsTab:CreateButton({
     Name = "Ativar Nameless Admin",
     Callback = function()
@@ -302,7 +233,7 @@ local NamelessButton = ScriptsTab:CreateButton({
     end
 })
 
--- Botão para Emotes
+-- 4. Script: Emotes
 local EmotesButton = ScriptsTab:CreateButton({
     Name = "Ativar Emotes",
     Callback = function()
@@ -325,7 +256,7 @@ local EmotesButton = ScriptsTab:CreateButton({
     end
 })
 
--- Botão para The Rake Remastered
+-- 5. Script: The Rake Remastered
 local RakeButton = ScriptsTab:CreateButton({
     Name = "Ativar The Rake Remastered",
     Callback = function()
