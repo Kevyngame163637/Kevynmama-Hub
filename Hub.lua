@@ -1,15 +1,21 @@
---// Kevynmama Hub v1.3 - Completo com Features (Speed, Noclip, Fly, ESP, Teleport, Invis)
---// Feito por: Kevyn Mal
+--// Kevynmama Hub v3.0 - Ultimate Edition
+--// Feito por: Kevyn Mal (Kevyngame163637) & Kaiozinhu12
 
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
 
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
---=== [UI] ===--
+--=== [Configurações] ===--
+local HUB_NAME = "Kevynmama Hub"
+local HUB_VERSION = "v3.0"
+local HUB_CREDITS = "Feito por: Kevyn Mal (Kevyngame163637) & Kaiozinhu12"
+local HUB_GITHUB = "github.com/Kevyngame163637/Kevynmama-Hub"
+
+--=== [UI Principal] ===--
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "KevynmamaHub"
 screenGui.ResetOnSpawn = false
@@ -17,12 +23,12 @@ screenGui.IgnoreGuiInset = true
 screenGui.DisplayOrder = 10000
 screenGui.Parent = playerGui
 
--- Botão Toggle
+--=== [Botão Animado] ===--
 local toggleBtn = Instance.new("TextButton")
 toggleBtn.Size = UDim2.new(0, 65, 0, 55)
 toggleBtn.Position = UDim2.new(0, 20, 0, 20)
 toggleBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-toggleBtn.Text = "BOT"
+toggleBtn.Text = "HUB"
 toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 toggleBtn.TextScaled = true
 toggleBtn.Font = Enum.Font.GothamBold
@@ -37,12 +43,25 @@ toggleStroke.Color = Color3.fromRGB(255, 0, 0)
 toggleStroke.Thickness = 2.5
 toggleStroke.Parent = toggleBtn
 
--- Janela Principal
+-- Efeito de pulsar
+coroutine.wrap(function()
+    while true do
+        local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0, true)
+        local tween = TweenService:Create(toggleBtn, tweenInfo, {Size = UDim2.new(0, 70, 0, 60)})
+        tween:Play()
+        wait(1)
+        tween = TweenService:Create(toggleBtn, tweenInfo, {Size = UDim2.new(0, 65, 0, 55)})
+        tween:Play()
+        wait(1)
+    end
+end)()
+
+--=== [Janela Principal] ===--
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 700, 0, 380) -- Aumentei a altura para caber mais features
+mainFrame.Size = UDim2.new(0, 700, 0, 420)
 mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 mainFrame.Visible = false
 mainFrame.Parent = screenGui
 
@@ -64,7 +83,7 @@ gradient.Parent = uiStroke
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Size = UDim2.new(1, 0, 0, 45)
 titleLabel.BackgroundTransparency = 1
-titleLabel.Text = "Kevynmama Bot Hub v1.3"
+titleLabel.Text = HUB_NAME .. " " .. HUB_VERSION
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleLabel.Font = Enum.Font.GothamBold
 titleLabel.TextSize = 22
@@ -72,9 +91,9 @@ titleLabel.Parent = mainFrame
 
 -- Sidebar
 local sidebar = Instance.new("ScrollingFrame")
-sidebar.Size = UDim2.new(0, 140, 1, -55)
+sidebar.Size = UDim2.new(0, 150, 1, -55)
 sidebar.Position = UDim2.new(0, 10, 0, 55)
-sidebar.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+sidebar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 sidebar.BorderSizePixel = 0
 sidebar.ScrollBarThickness = 6
 sidebar.Parent = mainFrame
@@ -92,8 +111,8 @@ sidebarPadding.Parent = sidebar
 
 -- Conteúdo
 local contentFrame = Instance.new("Frame")
-contentFrame.Size = UDim2.new(1, -160, 1, -55)
-contentFrame.Position = UDim2.new(0, 160, 0, 55)
+contentFrame.Size = UDim2.new(1, -170, 1, -55)
+contentFrame.Position = UDim2.new(0, 170, 0, 55)
 contentFrame.BackgroundTransparency = 1
 contentFrame.Parent = mainFrame
 
@@ -103,7 +122,7 @@ local currentTab = nil
 local function createTab(name, content)
     local btn = Instance.new("TextButton")
     btn.Size = UDim2.new(1, 0, 0, 35)
-    btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     btn.Text = name
     btn.TextColor3 = Color3.fromRGB(255, 255, 255)
     btn.Font = Enum.Font.GothamSemibold
@@ -114,36 +133,99 @@ local function createTab(name, content)
     btnCorner.CornerRadius = UDim.new(0, 8)
     btnCorner.Parent = btn
 
+    local btnStroke = Instance.new("UIStroke")
+    btnStroke.Color = Color3.fromRGB(60, 60, 60)
+    btnStroke.Thickness = 1.5
+    btnStroke.Parent = btn
+
     btn.MouseButton1Click:Connect(function()
         if currentTab then currentTab.Visible = false end
         content.Visible = true
         currentTab = content
         for _, b in ipairs(sidebar:GetChildren()) do
-            if b:IsA("TextButton") then b.BackgroundColor3 = Color3.fromRGB(50, 50, 50) end
+            if b:IsA("TextButton") then
+                TweenService:Create(b, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(40, 40, 40)}):Play()
+            end
         end
-        btn.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+        TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(70, 70, 70)}):Play()
     end)
+
+    btn.MouseEnter:Connect(function()
+        if btn ~= currentTab then
+            TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(50, 50, 50)}):Play()
+        end
+    end)
+
+    btn.MouseLeave:Connect(function()
+        if btn ~= currentTab then
+            TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(40, 40, 40)}):Play()
+        end
+    end)
+
     return btn
 end
 
---=== [Aba Main] ===--
-local mainContent = Instance.new("ScrollingFrame")
-mainContent.Size = UDim2.new(1, 0, 1, 0)
-mainContent.BackgroundTransparency = 1
-mainContent.Visible = true
-mainContent.Parent = contentFrame
+--=== [Aba Home] ===--
+local homeContent = Instance.new("ScrollingFrame")
+homeContent.Size = UDim2.new(1, 0, 1, 0)
+homeContent.BackgroundTransparency = 1
+homeContent.Visible = true
+homeContent.Parent = contentFrame
 
-local mainText = Instance.new("TextLabel")
-mainText.Size = UDim2.new(1, 0, 1, 0)
-mainText.BackgroundTransparency = 1
-mainText.Text = "v1.3 - Bot Exclusivo\n\nFeatures na aba 'Bot':\n• Speed (arraste o slider)\n• Noclip (toggle)\n• Fly (WASD + Space/Ctrl)\n• ESP Highlight (toggle)\n• Teleport (para jogadores)\n• Invisibilidade (toggle)\n\nTeste tudo!"
-mainText.TextColor3 = Color3.fromRGB(220, 220, 220)
-mainText.Font = Enum.Font.Gotham
-mainText.TextSize = 18
-mainText.TextWrapped = true
-mainText.Parent = mainContent
+local homeTitle = Instance.new("TextLabel")
+homeTitle.Size = UDim2.new(1, 0, 0, 30)
+homeTitle.Text = "🏠 Bem-vindo ao " .. HUB_NAME .. " " .. HUB_VERSION
+homeTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+homeTitle.Font = Enum.Font.GothamBold
+homeTitle.TextSize = 20
+homeTitle.BackgroundTransparency = 1
+homeTitle.Parent = homeContent
 
-createTab("Main", mainContent)
+local homeUpdates = Instance.new("TextLabel")
+homeUpdates.Size = UDim2.new(1, 0, 0, 100)
+homeUpdates.Position = UDim2.new(0, 0, 0, 40)
+homeUpdates.Text = [[
+🔹 Atualizações da v3.0:
+• Botão animado com efeito de pulsar
+• Home com todas as informações
+• Créditos atualizados
+• UI moderna e otimizada
+• Melhorias no Fly e Noclip
+• ESP com nome e highlight
+• Teleport para jogadores
+• Invisibilidade (transparência)
+• Efeitos visuais premium
+]]
+homeUpdates.TextColor3 = Color3.fromRGB(220, 220, 220)
+homeUpdates.Font = Enum.Font.Gotham
+homeUpdates.TextSize = 16
+homeUpdates.TextWrapped = true
+homeUpdates.TextYAlignment = Enum.TextYAlignment.Top
+homeUpdates.BackgroundTransparency = 1
+homeUpdates.Parent = homeContent
+
+local homeCredits = Instance.new("TextLabel")
+homeCredits.Size = UDim2.new(1, 0, 0, 60)
+homeCredits.Position = UDim2.new(0, 0, 0, 150)
+homeCredits.Text = "👨‍💻 " .. HUB_CREDITS .. "\n🌐 " .. HUB_GITHUB
+homeCredits.TextColor3 = Color3.fromRGB(180, 180, 255)
+homeCredits.Font = Enum.Font.Gotham
+homeCredits.TextSize = 16
+homeCredits.TextWrapped = true
+homeCredits.BackgroundTransparency = 1
+homeCredits.Parent = homeContent
+
+local homeThanks = Instance.new("TextLabel")
+homeThanks.Size = UDim2.new(1, 0, 0, 40)
+homeThanks.Position = UDim2.new(0, 0, 0, 220)
+homeThanks.Text = "Obrigado por usar o " .. HUB_NAME .. "!"
+homeThanks.TextColor3 = Color3.fromRGB(100, 255, 100)
+homeThanks.Font = Enum.Font.GothamBold
+homeThanks.TextSize = 18
+homeThanks.BackgroundTransparency = 1
+homeThanks.Parent = homeContent
+
+createTab("Home", homeContent)
 
 --=== [Aba Bot] ===--
 local botContent = Instance.new("ScrollingFrame")
@@ -204,11 +286,17 @@ noclipBtn.Font = Enum.Font.GothamBold
 noclipBtn.TextSize = 16
 noclipBtn.Parent = botContent
 
+local noclipCorner = Instance.new("UICorner")
+noclipCorner.CornerRadius = UDim.new(0, 8)
+noclipCorner.Parent = noclipBtn
+
 local noclipOn = false
 noclipBtn.MouseButton1Click:Connect(function()
     noclipOn = not noclipOn
     noclipBtn.Text = "Noclip: " .. (noclipOn and "ON" or "OFF")
-    noclipBtn.BackgroundColor3 = noclipOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
+    TweenService:Create(noclipBtn, TweenInfo.new(0.2), {
+        BackgroundColor3 = noclipOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
+    }):Play()
 end)
 
 RunService.Stepped:Connect(function()
@@ -230,12 +318,18 @@ flyBtn.Font = Enum.Font.GothamBold
 flyBtn.TextSize = 16
 flyBtn.Parent = botContent
 
+local flyCorner = Instance.new("UICorner")
+flyCorner.CornerRadius = UDim.new(0, 8)
+flyCorner.Parent = flyBtn
+
 local flyOn = false
 local bv, bg
 flyBtn.MouseButton1Click:Connect(function()
     flyOn = not flyOn
     flyBtn.Text = "Fly: " .. (flyOn and "ON" or "OFF")
-    flyBtn.BackgroundColor3 = flyOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
+    TweenService:Create(flyBtn, TweenInfo.new(0.2), {
+        BackgroundColor3 = flyOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
+    }):Play()
 
     if flyOn and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         bv = Instance.new("BodyVelocity")
@@ -277,6 +371,10 @@ espBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 espBtn.Font = Enum.Font.GothamBold
 espBtn.TextSize = 16
 espBtn.Parent = botContent
+
+local espCorner = Instance.new("UICorner")
+espCorner.CornerRadius = UDim.new(0, 8)
+espCorner.Parent = espBtn
 
 local espOn = false
 local highlights = {}
@@ -321,7 +419,9 @@ end
 espBtn.MouseButton1Click:Connect(function()
     espOn = not espOn
     espBtn.Text = "ESP: " .. (espOn and "ON" or "OFF")
-    espBtn.BackgroundColor3 = espOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
+    TweenService:Create(espBtn, TweenInfo.new(0.2), {
+        BackgroundColor3 = espOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
+    }):Play()
 
     if espOn then
         for _, p in ipairs(Players:GetPlayers()) do
@@ -362,10 +462,17 @@ teleportBtn.Font = Enum.Font.GothamBold
 teleportBtn.TextSize = 16
 teleportBtn.Parent = botContent
 
+local teleportCorner = Instance.new("UICorner")
+teleportCorner.CornerRadius = UDim.new(0, 8)
+teleportCorner.Parent = teleportBtn
+
 teleportBtn.MouseButton1Click:Connect(function()
-    local target = -- (Aqui você pode adicionar lógica para selecionar jogador)
+    local target = Players:GetPlayers()[math.random(1, #Players:GetPlayers())]
     if target and target.Character and player.Character then
         player.Character:MoveTo(target.Character.HumanoidRootPart.Position)
+        teleportBtn.Text = "Teleportado para: " .. target.Name
+        wait(2)
+        teleportBtn.Text = "Teleport"
     end
 end)
 
@@ -380,11 +487,17 @@ invisBtn.Font = Enum.Font.GothamBold
 invisBtn.TextSize = 16
 invisBtn.Parent = botContent
 
+local invisCorner = Instance.new("UICorner")
+invisCorner.CornerRadius = UDim.new(0, 8)
+invisCorner.Parent = invisBtn
+
 local invisOn = false
 invisBtn.MouseButton1Click:Connect(function()
     invisOn = not invisOn
     invisBtn.Text = "Invis: " .. (invisOn and "ON" or "OFF")
-    invisBtn.BackgroundColor3 = invisOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
+    TweenService:Create(invisBtn, TweenInfo.new(0.2), {
+        BackgroundColor3 = invisOn and Color3.fromRGB(50, 255, 50) or Color3.fromRGB(255, 50, 50)
+    }):Play()
 
     if player.Character then
         for _, part in pairs(player.Character:GetDescendants()) do
@@ -404,22 +517,43 @@ creditsContent.BackgroundTransparency = 1
 creditsContent.Visible = false
 creditsContent.Parent = contentFrame
 
-local creditsLabel = Instance.new("TextLabel")
-creditsLabel.Size = UDim2.new(1, 0, 1, 0)
-creditsLabel.BackgroundTransparency = 1
-creditsLabel.Text = "Feito por:\n• Kevyn Mal (Kevynmama Hub)\n\nObrigado por usar!\nBot exclusivo pro seu jogo.\n\nGitHub: github.com/Kevyngame163637"
-creditsLabel.TextColor3 = Color3.fromRGB(180, 180, 255)
-creditsLabel.Font = Enum.Font.Gotham
-creditsLabel.TextSize = 18
-creditsLabel.TextWrapped = true
-creditsLabel.Parent = creditsContent
+local creditsTitle = Instance.new("TextLabel")
+creditsTitle.Size = UDim2.new(1, 0, 0, 30)
+creditsTitle.Text = "👨‍💻 Créditos"
+creditsTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+creditsTitle.Font = Enum.Font.GothamBold
+creditsTitle.TextSize = 20
+creditsTitle.BackgroundTransparency = 1
+creditsTitle.Parent = creditsContent
+
+local creditsText = Instance.new("TextLabel")
+creditsText.Size = UDim2.new(1, 0, 0, 100)
+creditsText.Position = UDim2.new(0, 0, 0, 40)
+creditsText.Text = [[
+💻 Desenvolvedores:
+• Kevyn Mal (Kevyngame163637)
+• Kaiozinhu12
+
+🌐 GitHub:
+github.com/Kevyngame163637/Kevynmama-Hub
+
+💙 Agradecimentos:
+Obrigado por usar o Kevynmama Hub!
+]]
+creditsText.TextColor3 = Color3.fromRGB(180, 180, 255)
+creditsText.Font = Enum.Font.Gotham
+creditsText.TextSize = 16
+creditsText.TextWrapped = true
+creditsText.TextYAlignment = Enum.TextYAlignment.Top
+creditsText.BackgroundTransparency = 1
+creditsText.Parent = creditsContent
 
 createTab("Créditos", creditsContent)
 
 --=== [Toggle UI] ===--
 toggleBtn.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible
-    toggleBtn.Text = mainFrame.Visible and "X" or "BOT"
+    toggleBtn.Text = mainFrame.Visible and "X" or "HUB"
 end)
 
 --=== [Rainbow Border] ===--
@@ -442,4 +576,4 @@ RunService.Heartbeat:Connect(function()
     if mainFrame.Visible then updateRainbow() end
 end)
 
-print("[OK] Kevynmama Hub v1.3 carregado! Aperte 'BOT' para abrir.")
+print("[OK] " .. HUB_NAME .. " " .. HUB_VERSION .. " carregado! Aperte 'HUB' para abrir.")
